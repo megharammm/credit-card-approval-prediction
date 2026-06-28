@@ -9,3 +9,4 @@ xgboost
 joblib
 email-validator
 cryptography
+gunicorn
