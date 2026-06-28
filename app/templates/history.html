@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Evaluation History - CreditValet{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-top: 1rem;">
+    <h2 style="font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">Evaluation History</h2>
+    <p style="color: var(--text-muted); text-align: center; margin-bottom: 2rem;">Log of previous creditworthiness assessments performed by your account.</p>
+
+    {% if not predictions %}
+        <div style="text-align: center; padding: 3rem; border: 1px dashed var(--border-color); border-radius: 12px; background: rgba(255, 255, 255, 0.02);">
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1.1rem;">You haven't run any prediction queries yet.</p>
+            <a href="{{ url_for('main.predict') }}" class="btn btn-primary">Start New Evaluation</a>
+        </div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="premium-table" id="history-table">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Applicant Details</th>
+                        <th>Income ($)</th>
+                        <th>Model Used</th>
+                        <th>Probability</th>
+                        <th>Decision</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pred in predictions %}
+                        <tr id="pred-row-{{ pred.id }}">
+                            <td style="font-size: 0.88rem; color: var(--text-main);">
+                                {{ pred.predicted_at.strftime('%Y-%m-%d %H:%M') }}
+                            </td>
+                            <td style="font-size: 0.88rem;">
+                                {{ 'Male' if pred.applicant.gender == 'M' else 'Female' }}, 
+                                {{ "%.0f"|format(-pred.applicant.days_birth / 365.25) }} Yrs, 
+                                {{ pred.applicant.name_family_status }}
+                            </td>
+                            <td style="font-weight: 500; color: white;">
+                                ${{ "{:,.0f}".format(pred.applicant.amt_income_total) }}
+                            </td>
+                            <td>
+                                {{ pred.ml_model.model_name }}
+                            </td>
+                            <td style="font-weight: 600; font-family: 'Outfit';">
+                                {{ "%.1f"|format(pred.prediction_probability * 100) }}%
+                            </td>
+                            <td>
+                                {% if pred.prediction_result == 1 %}
+                                    <span class="badge-status badge-approved">Approved</span>
+                                {% else %}
+                                    <span class="badge-status badge-rejected">Rejected</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('main.result', prediction_id=pred.id) }}" class="auth-link" style="font-size: 0.88rem;">View Details</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
