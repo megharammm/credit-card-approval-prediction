@@ -1,0 +1,11 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+SQLAlchemy
+pandas
+numpy
+scikit-learn
+xgboost
+joblib
+email-validator
+cryptography

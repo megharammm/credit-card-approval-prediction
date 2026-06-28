@@ -1,0 +1,219 @@
+from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
+from flask_login import login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from app.models import db, Users, Applicant_Details, Credit_History, ML_Model, Approval_Prediction
+from app.utils import preprocess_and_predict
+from datetime import datetime
+
+# Initialize blueprints
+main = Blueprint('main', __name__)
+auth = Blueprint('auth', __name__)
+
+# --- AUTH ROUTES ---
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+        
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        
+        # Check if user already exists
+        user_exists = Users.query.filter((Users.username == username) | (Users.email == email)).first()
+        if user_exists:
+            flash('Username or Email already registered.', 'danger')
+            return redirect(url_for('auth.register'))
+            
+        # Create new user
+        new_user = Users(
+            username=username,
+            email=email,
+            password_hash=generate_password_hash(password, method='scrypt')
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        
+        flash('Registration successful! Please log in.', 'success')
+        return redirect(url_for('auth.login'))
+        
+    return render_template('register.html')
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+        
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        user = Users.query.filter_by(username=username).first()
+        if user and check_password_hash(user.password_hash, password):
+            login_user(user)
+            flash('Logged in successfully.', 'success')
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('main.index'))
+        else:
+            flash('Invalid username or password.', 'danger')
+            
+    return render_template('login.html')
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Logged out successfully.', 'info')
+    return redirect(url_for('auth.login'))
+
+
+# --- MAIN ROUTES ---
+
+@main.route('/')
+def index():
+    if not current_user.is_authenticated:
+        return redirect(url_for('auth.login'))
+        
+    # Get stats for this user
+    total_queries = Approval_Prediction.query.filter_by(user_id=current_user.id).count()
+    approved_queries = Approval_Prediction.query.filter_by(user_id=current_user.id, prediction_result=1).count()
+    rejected_queries = Approval_Prediction.query.filter_by(user_id=current_user.id, prediction_result=0).count()
+    active_model = ML_Model.query.filter_by(is_active=True).first()
+    
+    # Recent 5 predictions
+    recent_predictions = Approval_Prediction.query.filter_by(user_id=current_user.id).order_by(Approval_Prediction.predicted_at.desc()).limit(5).all()
+    
+    return render_template(
+        'index.html',
+        total_queries=total_queries,
+        approved_queries=approved_queries,
+        rejected_queries=rejected_queries,
+        active_model=active_model,
+        recent_predictions=recent_predictions
+    )
+
+@main.route('/predict', methods=['GET', 'POST'])
+@login_required
+def predict():
+    # Check if there is an active ML Model
+    active_model = ML_Model.query.filter_by(is_active=True).first()
+    
+    if request.method == 'POST':
+        if not active_model:
+            flash('No active ML Model found! Please run the training pipeline first to register a model.', 'warning')
+            return redirect(url_for('main.models_dashboard'))
+            
+        try:
+            # Retrieve applicant details from form
+            gender = request.form.get('gender')
+            own_car = request.form.get('own_car')
+            own_realty = request.form.get('own_realty')
+            cnt_children = int(request.form.get('cnt_children', 0))
+            amt_income_total = float(request.form.get('amt_income_total', 0.0))
+            name_income_type = request.form.get('name_income_type')
+            name_education_type = request.form.get('name_education_type')
+            name_family_status = request.form.get('name_family_status')
+            name_housing_type = request.form.get('name_housing_type')
+            
+            # Days birth & days employed conversions
+            age_years = float(request.form.get('age', 30))
+            days_birth = int(-age_years * 365.25)
+            
+            employment_status = request.form.get('employment_status')
+            if employment_status == 'Unemployed':
+                days_employed = 365243 # Standard Kaggle code representing unemployed/pensioner
+            else:
+                exp_years = float(request.form.get('experience', 0))
+                days_employed = int(-exp_years * 365.25)
+                
+            flag_mobil = int(request.form.get('flag_mobil', 1))
+            flag_work_phone = int(request.form.get('flag_work_phone', 0))
+            flag_phone = int(request.form.get('flag_phone', 0))
+            flag_email = int(request.form.get('flag_email', 0))
+            occupation_type = request.form.get('occupation_type')
+            
+            # Save applicant details to database
+            applicant = Applicant_Details(
+                user_id=current_user.id,
+                gender=gender,
+                own_car=own_car,
+                own_realty=own_realty,
+                cnt_children=cnt_children,
+                amt_income_total=amt_income_total,
+                name_income_type=name_income_type,
+                name_education_type=name_education_type,
+                name_family_status=name_family_status,
+                name_housing_type=name_housing_type,
+                days_birth=days_birth,
+                days_employed=days_employed,
+                flag_mobil=flag_mobil,
+                flag_work_phone=flag_work_phone,
+                flag_phone=flag_phone,
+                flag_email=flag_email,
+                occupation_type=occupation_type
+            )
+            
+            db.session.add(applicant)
+            db.session.commit()
+            
+            # Run prediction logic using active model
+            prediction_label, probability = preprocess_and_predict(applicant, active_model.model_path)
+            
+            # Save prediction record
+            prediction = Approval_Prediction(
+                user_id=current_user.id,
+                applicant_id=applicant.id,
+                model_used_id=active_model.id,
+                prediction_result=int(prediction_label),
+                prediction_probability=float(probability)
+            )
+            db.session.add(prediction)
+            db.session.commit()
+            
+            flash('Prediction generated successfully!', 'success')
+            return redirect(url_for('main.result', prediction_id=prediction.id))
+            
+        except Exception as e:
+            db.session.rollback()
+            flash(f'An error occurred: {str(e)}', 'danger')
+            return redirect(url_for('main.predict'))
+            
+    return render_template('predict.html', active_model=active_model)
+
+@main.route('/result/<int:prediction_id>')
+@login_required
+def result(prediction_id):
+    prediction = Approval_Prediction.query.get_or_404(prediction_id)
+    # Authorization check: only view own predictions
+    if prediction.user_id != current_user.id:
+        abort(403)
+    return render_template('result.html', prediction=prediction)
+
+@main.route('/history')
+@login_required
+def history():
+    predictions = Approval_Prediction.query.filter_by(user_id=current_user.id).order_by(Approval_Prediction.predicted_at.desc()).all()
+    return render_template('history.html', predictions=predictions)
+
+@main.route('/models', methods=['GET'])
+@login_required
+def models_dashboard():
+    models = ML_Model.query.order_by(ML_Model.accuracy.desc()).all()
+    return render_template('models.html', models=models)
+
+@main.route('/models/toggle/<int:model_id>', methods=['POST'])
+@login_required
+def toggle_model(model_id):
+    model = ML_Model.query.get_or_404(model_id)
+    
+    # Deactivate all models
+    ML_Model.query.update({ML_Model.is_active: False})
+    
+    # Activate selected model
+    model.is_active = True
+    db.session.commit()
+    
+    flash(f'{model.model_name} activated for predictions.', 'success')
+    return redirect(url_for('main.models_dashboard'))

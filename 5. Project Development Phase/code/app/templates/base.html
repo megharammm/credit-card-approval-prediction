@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Credit Card Approval Predictor{% endblock %}</title>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Premium Header & Navbar -->
+    <nav class="navbar" id="app-navbar">
+        <a href="{{ url_for('main.index') }}" class="nav-brand">
+            💳 CreditValet <span>Internship Project</span>
+        </a>
+        <ul class="nav-links">
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('main.index') }}" class="nav-link {% if request.path == url_for('main.index') %}active{% endif %}">Dashboard</a></li>
+                <li><a href="{{ url_for('main.predict') }}" class="nav-link {% if request.path == url_for('main.predict') %}active{% endif %}">Predict</a></li>
+                <li><a href="{{ url_for('main.history') }}" class="nav-link {% if request.path == url_for('main.history') %}active{% endif %}">History</a></li>
+                <li><a href="{{ url_for('main.models_dashboard') }}" class="nav-link {% if request.path == url_for('main.models_dashboard') %}active{% endif %}">Models Dashboard</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="nav-link nav-btn-logout">Logout ({{ current_user.username }})</a></li>
+            {% else %}
+                <li><a href="{{ url_for('auth.login') }}" class="nav-link {% if request.path == url_for('auth.login') %}active{% endif %}">Login</a></li>
+                <li><a href="{{ url_for('auth.register') }}" class="nav-link {% if request.path == url_for('auth.register') %}active{% endif %}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="container">
+        <!-- Flash messages section -->
+        <div class="flash-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}" id="flash-{{ loop.index }}">
+                            <span>{{ message }}</span>
+                            <button class="flash-close" onclick="this.parentElement.remove()">&times;</button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Premium Footer -->
+    <footer>
+        <p>&copy; 2026 Skill Valet Internship Project. Developed with ❤️ for Credit Card Approval Prediction.</p>
+        <p style="margin-top: 0.4rem; font-size: 0.8rem; opacity: 0.6;">Deployable on IBM Watson Machine Learning | Powered by Flask, SQLAlchemy & SQLite</p>
+    </footer>
+
+    <!-- Custom Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
