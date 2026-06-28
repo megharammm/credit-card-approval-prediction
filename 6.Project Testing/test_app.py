@@ -23,25 +23,22 @@ class CreditValetTest(unittest.TestCase):
         with self.app.app_context():
             db.drop_all()
             
-    def test_auth_pages_load(self):
-        # Check if auth pages load correctly
-        r1 = self.client.get('/login')
+    def test_public_pages_load(self):
+        # Check that dashboard (index) loads directly
+        r1 = self.client.get('/')
         self.assertEqual(r1.status_code, 200)
         
-        r2 = self.client.get('/register')
+        # Check that predict form loads directly
+        r2 = self.client.get('/predict')
         self.assertEqual(r2.status_code, 200)
 
-    def test_unauthenticated_redirect(self):
-        # Predict page should redirect unauthenticated users to login
-        response = self.client.get('/predict')
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue('/login' in response.headers['Location'])
+        # Check that history logs page loads directly
+        r3 = self.client.get('/history')
+        self.assertEqual(r3.status_code, 200)
 
-    def test_dashboard_redirect(self):
-        # Accessing home root should redirect to login when unauthenticated
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue('/login' in response.headers['Location'])
+        # Check that models dashboard loads directly
+        r4 = self.client.get('/models')
+        self.assertEqual(r4.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()

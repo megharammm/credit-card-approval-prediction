@@ -14,16 +14,10 @@
             💳 CreditValet <span>Internship Project</span>
         </a>
         <ul class="nav-links">
-            {% if current_user.is_authenticated %}
-                <li><a href="{{ url_for('main.index') }}" class="nav-link {% if request.path == url_for('main.index') %}active{% endif %}">Dashboard</a></li>
-                <li><a href="{{ url_for('main.predict') }}" class="nav-link {% if request.path == url_for('main.predict') %}active{% endif %}">Predict</a></li>
-                <li><a href="{{ url_for('main.history') }}" class="nav-link {% if request.path == url_for('main.history') %}active{% endif %}">History</a></li>
-                <li><a href="{{ url_for('main.models_dashboard') }}" class="nav-link {% if request.path == url_for('main.models_dashboard') %}active{% endif %}">Models Dashboard</a></li>
-                <li><a href="{{ url_for('auth.logout') }}" class="nav-link nav-btn-logout">Logout ({{ current_user.username }})</a></li>
-            {% else %}
-                <li><a href="{{ url_for('auth.login') }}" class="nav-link {% if request.path == url_for('auth.login') %}active{% endif %}">Login</a></li>
-                <li><a href="{{ url_for('auth.register') }}" class="nav-link {% if request.path == url_for('auth.register') %}active{% endif %}">Register</a></li>
-            {% endif %}
+            <li><a href="{{ url_for('main.index') }}" class="nav-link {% if request.path == url_for('main.index') %}active{% endif %}">Dashboard</a></li>
+            <li><a href="{{ url_for('main.predict') }}" class="nav-link {% if request.path == url_for('main.predict') %}active{% endif %}">Predict</a></li>
+            <li><a href="{{ url_for('main.history') }}" class="nav-link {% if request.path == url_for('main.history') %}active{% endif %}">History</a></li>
+            <li><a href="{{ url_for('main.models_dashboard') }}" class="nav-link {% if request.path == url_for('main.models_dashboard') %}active{% endif %}">Models Dashboard</a></li>
         </ul>
     </nav>
 
