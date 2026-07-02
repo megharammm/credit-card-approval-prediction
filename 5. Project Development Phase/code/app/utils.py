@@ -17,11 +17,15 @@ def preprocess_and_predict(applicant, model_path):
     else:
         years_employed = -applicant.days_employed / 365.25
         
+    # Hard rejection threshold: Any annual income below ₹1,20,000 (1.2 Lakhs) is automatically rejected
+    income = applicant.amt_income_total
+    if income < 120000:
+        return 0, 0.05
+
     # Calculate credit risk scoring base points (range -50 to +100)
     score = 0.0
-    
+
     # 1. Income Factor (scale: up to +35 points)
-    income = applicant.amt_income_total
     if income >= 300000:
         score += 35
     elif income >= 200000:
