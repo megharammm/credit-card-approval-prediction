@@ -19,7 +19,7 @@
                     <tr>
                         <th>Date & Time</th>
                         <th>Applicant Details</th>
-                        <th>Income ($)</th>
+                        <th>Income (₹)</th>
                         <th>Model Used</th>
                         <th>Probability</th>
                         <th>Decision</th>
@@ -38,7 +38,7 @@
                                 {{ pred.applicant.name_family_status }}
                             </td>
                             <td style="font-weight: 500; color: white;">
-                                ${{ "{:,.0f}".format(pred.applicant.amt_income_total) }}
+                                ₹{{ "{:,.0f}".format(pred.applicant.amt_income_total) }}
                             </td>
                             <td>
                                 {{ pred.ml_model.model_name }}

@@ -105,7 +105,7 @@
                                         {{ 'Male' if pred.applicant.gender == 'M' else 'Female' }}, 
                                         {{ "%.0f"|format(-pred.applicant.days_birth / 365.25) }} Yrs
                                     </td>
-                                    <td style="font-weight: 500; font-size: 0.85rem;">${{ "{:,.0f}".format(pred.applicant.amt_income_total) }}</td>
+                                    <td style="font-weight: 500; font-size: 0.85rem;">₹{{ "{:,.0f}".format(pred.applicant.amt_income_total) }}</td>
                                     <td>
                                         {% if pred.prediction_result == 1 %}
                                             <span class="badge-status badge-approved" style="font-size: 0.75rem; padding: 0.15rem 0.5rem;">Approved</span>
