@@ -235,7 +235,15 @@
     <!-- Project Overview Details -->
     <div class="predict-grid" style="margin-bottom: 4rem;">
         <div class="card" style="padding: 2.5rem;">
-            <h3 class="form-section-title">🔍 Project Goals</h3>
+            <h3 class="form-section-title" style="display: flex; align-items: center;">
+                <span class="animated-icon-wrapper">
+                    <svg class="animated-icon icon-search" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                Project Goals
+            </h3>
             <p style="color: var(--neutral-300); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
                 Automates credit assessment using applicant demographics, income status, existing EMI commitments, and
                 past default history to optimize processing cycles.
@@ -247,7 +255,15 @@
         </div>
 
         <div class="card" style="padding: 2.5rem;">
-            <h3 class="form-section-title">⚙️ Evaluation Engines</h3>
+            <h3 class="form-section-title" style="display: flex; align-items: center;">
+                <span class="animated-icon-wrapper">
+                    <svg class="animated-icon icon-gear" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </span>
+                Evaluation Engines
+            </h3>
             <p style="color: var(--neutral-300); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
                 Runs a hybrid scoring environment consisting of:
             </p>
@@ -262,44 +278,75 @@
 
     <!-- Software Development Life Cycle Roadmap -->
     <div class="card" style="padding: 3rem 2.5rem; margin-bottom: 4rem;">
-        <h3 class="form-section-title" style="text-align: center; margin-bottom: 2.5rem;">🚀 SDLC Development Pipeline
+        <h3 class="form-section-title" style="text-align: center; margin-bottom: 2.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+            <span class="animated-icon-wrapper" style="margin-right: 0;">
+                <svg class="animated-icon icon-rocket" viewBox="0 0 24 24">
+                    <path d="M22 2s-7 2-10 6-3 8-3 8 4 1 5 1 11-3 11-3z"></path>
+                    <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+                    <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+                </svg>
+            </span>
+            SDLC Development Pipeline
         </h3>
         <div
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; text-align: center;">
-            <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;"
-                onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'"
-                onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
-                <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">📊</div>
+            <div class="pipeline-card">
+                <div style="margin-bottom: 0.75rem; display: flex; justify-content: center; height: 32px; align-items: center; color: var(--text-muted);">
+                    <svg class="animated-icon icon-chart" viewBox="0 0 24 24">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                </div>
                 <h5
                     style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">
                     1. Exploration</h5>
                 <p style="color: var(--text-muted); font-size: 0.75rem; line-height: 1.4;">Cleaning duplicates and
                     missing values</p>
             </div>
-            <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;"
-                onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'"
-                onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
-                <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🧹</div>
+            <div class="pipeline-card">
+                <div style="margin-bottom: 0.75rem; display: flex; justify-content: center; height: 32px; align-items: center; color: var(--text-muted);">
+                    <svg class="animated-icon icon-sparkles" viewBox="0 0 24 24">
+                        <path d="M12 3c.132 4.132 1.868 5.868 6 6-4.132.132-5.868 1.868-6 6-.132-4.132-1.868-5.868-6-6 4.132-.132 5.868-1.868 6-6Z"></path>
+                        <path d="M5 16c.066 2.066.934 2.934 3 3-2.066.066-2.934.934-3 3-.066-2.066-.934-2.934-3-3 2.066-.066 2.934-.934 3-3Z" style="transform: scale(0.6); transform-origin: 5px 16px; opacity: 0.7;"></path>
+                    </svg>
+                </div>
                 <h5
                     style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">
                     2. Preprocessing</h5>
                 <p style="color: var(--text-muted); font-size: 0.75rem; line-height: 1.4;">Label encoding and feature
                     mapping</p>
             </div>
-            <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;"
-                onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'"
-                onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
-                <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🤖</div>
+            <div class="pipeline-card">
+                <div style="margin-bottom: 0.75rem; display: flex; justify-content: center; height: 32px; align-items: center; color: var(--text-muted);">
+                    <svg class="animated-icon icon-cpu" viewBox="0 0 24 24">
+                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                        <line x1="20" y1="15" x2="23" y2="15"></line>
+                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                        <line x1="1" y1="15" x2="4" y2="15"></line>
+                    </svg>
+                </div>
                 <h5
                     style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">
                     3. Model Training</h5>
                 <p style="color: var(--text-muted); font-size: 0.75rem; line-height: 1.4;">Training 4 classification
                     pipelines</p>
             </div>
-            <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;"
-                onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'"
-                onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
-                <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🌐</div>
+            <div class="pipeline-card">
+                <div style="margin-bottom: 0.75rem; display: flex; justify-content: center; height: 32px; align-items: center; color: var(--text-muted);">
+                    <svg class="animated-icon icon-globe" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </div>
                 <h5
                     style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">
                     4. Deployment</h5>

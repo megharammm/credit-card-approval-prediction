@@ -73,7 +73,14 @@
         <!-- Panel 1: Quick Actions -->
         <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 2.5rem;">
             <div>
-                <h3 class="form-section-title">⚡ Operations</h3>
+                <h3 class="form-section-title" style="display: flex; align-items: center;">
+                    <span class="animated-icon-wrapper">
+                        <svg class="animated-icon icon-zap" viewBox="0 0 24 24">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                    </span>
+                    Operations
+                </h3>
                 <p style="color: var(--neutral-300); font-size: 0.95rem; margin-bottom: 2.5rem; line-height: 1.6; font-weight: 300;">
                     Execute interactive credit scoring applications or navigate model toggles on the models manager to review classification pipelines.
                 </p>
@@ -87,7 +94,15 @@
 
         <!-- Panel 2: Recent Activity -->
         <div class="card" style="grid-column: span 2; padding: 2.5rem;">
-            <h3 class="form-section-title">🕒 Recent Activity</h3>
+            <h3 class="form-section-title" style="display: flex; align-items: center;">
+                <span class="animated-icon-wrapper">
+                    <svg class="animated-icon icon-clock" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14" class="icon-clock-hand"></polyline>
+                    </svg>
+                </span>
+                Recent Activity
+            </h3>
             
             {% if not recent_predictions %}
                 <div style="text-align: center; padding: 3rem 2rem; border: 1px dashed var(--border-color); border-radius: 12px; background: rgba(255,255,255,0.01);">
