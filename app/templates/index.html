@@ -3,7 +3,7 @@
 {% block title %}Evaluate Applicant - CreditValet{% endblock %}
 
 {% block content %}
-<div class="predict-wrapper" style="max-width: 1000px; margin: 0 auto;">
+<div class="predict-wrapper" style="max-width: 650px; margin: 0 auto;">
     <div class="card" style="margin-top: 2rem;">
         <!-- App Preview Window Controls -->
         <div class="app-preview-header">
@@ -23,61 +23,61 @@
         </p>
 
         <form action="{{ url_for('main.predict') }}" method="POST" id="predict-form">
-            <!-- Stripped Down Layout -->
-            <div style="display: flex; flex-direction: column; gap: 3rem;">
+            <!-- Premium Narrow Layout -->
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                 
-                <!-- Section 1: Personal Profile -->
-                <div class="form-section-block">
-                    <h3 class="form-section-title" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">👤 Personal Profile</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                        <div class="form-group">
-                            <label for="name" class="form-label">Applicant Name</label>
-                            <input type="text" id="name" name="name" class="form-control" placeholder="Enter applicant name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="age" class="form-label">Age (in Years)</label>
-                            <input type="number" id="age" name="age" class="form-control" min="18" max="100" value="30" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="employment_status" class="form-label">Employment Status</label>
-                            <select id="employment_status" name="employment_status" class="form-control" required>
-                                <option value="Salaried">Salaried</option>
-                                <option value="Self-employed">Self-employed</option>
-                                <option value="Unemployed">Unemployed / Retired</option>
-                            </select>
-                        </div>
+                <!-- Row 1: Applicant Name -->
+                <div class="form-group">
+                    <label for="name" class="form-label">Applicant Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter applicant name" required>
+                </div>
+
+                <!-- Row 2: Age & Employment -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label for="age" class="form-label">Age (in Years)</label>
+                        <input type="number" id="age" name="age" class="form-control" min="18" max="100" value="30" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="employment_status" class="form-label">Employment Status</label>
+                        <select id="employment_status" name="employment_status" class="form-control" required>
+                            <option value="Salaried">Salaried</option>
+                            <option value="Self-employed">Self-employed</option>
+                            <option value="Unemployed">Unemployed / Retired</option>
+                        </select>
                     </div>
                 </div>
 
-                <!-- Section 2: Financial Standing -->
-                <div class="form-section-block">
-                    <h3 class="form-section-title" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">💰 Financial Standing</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                        <div class="form-group">
-                            <label for="monthly_salary" class="form-label">Monthly Salary (₹)</label>
-                            <input type="text" id="monthly_salary" name="monthly_salary" class="form-control" placeholder="e.g. 50,000" value="50,000" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="existing_emi" class="form-label">Existing Monthly EMI (₹)</label>
-                            <input type="text" id="existing_emi" name="existing_emi" class="form-control" placeholder="e.g. 5,000" value="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="credit_score" class="form-label">Credit Score</label>
-                            <input type="number" id="credit_score" name="credit_score" class="form-control" min="300" max="900" value="750" required>
-                        </div>
+                <!-- Row 3: Salary & EMI -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label for="monthly_salary" class="form-label">Monthly Salary (₹)</label>
+                        <input type="text" id="monthly_salary" name="monthly_salary" class="form-control" placeholder="e.g. 50,000" value="50,000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="existing_emi" class="form-label">Existing Monthly EMI (₹)</label>
+                        <input type="text" id="existing_emi" name="existing_emi" class="form-control" placeholder="e.g. 5,000" value="0" required>
+                    </div>
+                </div>
+
+                <!-- Row 4: Credit Score & Default Checkbox -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: end;">
+                    <div class="form-group">
+                        <label for="credit_score" class="form-label">Credit Score</label>
+                        <input type="number" id="credit_score" name="credit_score" class="form-control" min="300" max="900" value="750" required>
                     </div>
                     
-                    <div class="form-group" style="margin-top: 1.5rem;">
-                        <label style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.95rem; cursor: pointer; font-weight: 500; padding: 0.75rem 1rem; border: 1px solid rgba(255,100,100,0.2); border-radius: 8px; background: rgba(255,100,100,0.05);">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="display: flex; align-items: center; justify-content: center; height: 38px; gap: 0.5rem; font-size: 0.95rem; cursor: pointer; font-weight: 500; border: 1px solid rgba(255,100,100,0.2); border-radius: 8px; background: rgba(255,100,100,0.05); transition: all 0.2s;">
                             <input type="checkbox" id="loan_default_history" name="loan_default_history" style="accent-color: var(--primary);"> 
-                            <span style="color: #ff8888;">Has Defaulted on Loans Before?</span>
+                            <span style="color: #ff8888;">Loan Default History?</span>
                         </label>
                     </div>
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 2rem;">
-                <button type="submit" class="btn btn-primary" style="width: 100%; max-width: 400px; padding: 14px;">
+            <div style="text-align: center; margin-top: 2.5rem;">
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px;">
                     Evaluate Credit Approval
                 </button>
             </div>
