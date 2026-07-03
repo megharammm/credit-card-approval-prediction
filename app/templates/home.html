@@ -19,6 +19,55 @@
             An interactive end-to-end banking application designed to automate and optimize creditworthiness evaluations with structural transparency.
         </p>
 
+        <!-- Identity Card Animation (HTML/CSS port of React Framer Motion snippet) -->
+        <div style="display: flex; justify-content: center; margin-bottom: 3rem;">
+            <div class="identity-card" style="
+                position: relative; 
+                height: 13rem;
+                width: 20rem;
+                border-radius: 1rem; 
+                padding: 1.5rem; 
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4); 
+                color: white; 
+                display: flex; 
+                flex-direction: column; 
+                justify-content: space-between; 
+                background-image: url('https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/ruixen_moon.png'); 
+                background-size: cover; 
+                background-position: center;
+                animation: slideDownFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                text-align: left;
+                overflow: hidden;
+            ">
+                <!-- Overlay -->
+                <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; background-color: rgba(0,0,0,0.5); border-radius: 1rem;"></div>
+
+                <!-- Card Content -->
+                <div style="position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: flex-start; font-size: 0.75rem; letter-spacing: 0.05em; font-family: monospace; color: rgba(255,255,255,0.7);">
+                    <span>IDENTITY CARD</span>
+                    <span>VALID</span>
+                </div>
+
+                <div style="position: relative; z-index: 10; font-family: monospace;">
+                    <p style="font-size: 1.125rem; letter-spacing: 0.15em; font-weight: 600; margin: 0 0 0.5rem 0; color: #ffffff;">ID **** 1998</p>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: rgba(255,255,255,0.8);">
+                        <span>CROMENOCKLE</span>
+                        <span>11/29</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            @keyframes slideDownFadeIn {
+                0% { transform: translateY(-20px); opacity: 0; }
+                100% { transform: translateY(0); opacity: 1; }
+            }
+            .identity-card {
+                border: 1px solid rgba(255,255,255,0.1);
+            }
+        </style>
+
         <div style="display: flex; justify-content: center; gap: 1rem;">
             <a href="{{ url_for('main.predict') }}" class="btn btn-primary">
                 Evaluate Applicant
