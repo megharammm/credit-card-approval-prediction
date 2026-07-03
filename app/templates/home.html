@@ -3,234 +3,82 @@
 {% block title %}Welcome - Credit Card Approval Predictor{% endblock %}
 
 {% block content %}
-<!-- Dependencies -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    corePlugins: {
-      preflight: false, // Prevent Tailwind from resetting our Aura Minimal styles
-    }
-  }
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<div style="margin-top: 2rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+    <!-- Project Showcase Hero -->
+    <div class="card" style="text-align: center; padding: 6rem 2rem; margin-bottom: 4rem; position: relative; overflow: hidden;">
+        <!-- Small Brand Badge/Chip -->
+        <div style="display: inline-flex; align-items: center; justify-content: center; padding: 4px 16px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2rem; color: var(--text-muted);">
+            Credit Assessment Engine
+        </div>
 
-<!-- Background Canvas -->
-<canvas id="shader-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
+        <h1 style="font-size: 3.2rem; font-weight: 500; letter-spacing: -0.05em; line-height: 1.1; margin-bottom: 1.5rem; color: #ffffff;">
+            Credit Card Approval Predictor
+        </h1>
+        
+        <p style="color: var(--neutral-300); font-size: 1.1rem; max-width: 650px; margin: 0 auto 3rem auto; line-height: 1.6; font-weight: 300;">
+            An interactive end-to-end banking application designed to automate and optimize creditworthiness evaluations with structural transparency.
+        </p>
 
-<!-- Source Quirk: Empty content div -->
-<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 10;">
-    <div class="content relative z-10 flex flex-col items-center justify-center min-h-screen p-4"></div>
-</div>
+        <div style="display: flex; justify-content: center; gap: 1rem;">
+            <a href="{{ url_for('main.predict') }}" class="btn btn-primary">
+                Evaluate Applicant
+            </a>
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-ghost">
+                View Analytics
+            </a>
+        </div>
+    </div>
 
-<!-- Actual Home Page Content wrapped in a scrollable area to bypass body overflow-hidden -->
-<div style="max-height: calc(100vh - 150px); overflow-y: auto; width: 100%; z-index: 20; position: relative; padding-bottom: 2rem;">
-    <div style="margin-top: 2rem; max-width: 900px; margin-left: auto; margin-right: auto;">
-        <!-- Project Showcase Hero -->
-        <div class="card" style="text-align: center; padding: 6rem 2rem; margin-bottom: 4rem; position: relative; overflow: hidden;">
-            <!-- Small Brand Badge/Chip -->
-            <div style="display: inline-flex; align-items: center; justify-content: center; padding: 4px 16px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2rem; color: var(--text-muted);">
-                Credit Assessment Engine
-            </div>
-
-            <h1 style="font-size: 3.2rem; font-weight: 500; letter-spacing: -0.05em; line-height: 1.1; margin-bottom: 1.5rem; color: #ffffff;">
-                Credit Card Approval Predictor
-            </h1>
-            
-            <p style="color: var(--neutral-300); font-size: 1.1rem; max-width: 650px; margin: 0 auto 3rem auto; line-height: 1.6; font-weight: 300;">
-                An interactive end-to-end banking application designed to automate and optimize creditworthiness evaluations with structural transparency.
+    <!-- Project Overview Details -->
+    <div class="predict-grid" style="margin-bottom: 4rem;">
+        <div class="card" style="padding: 2.5rem;">
+            <h3 class="form-section-title">🔍 Project Goals</h3>
+            <p style="color: var(--neutral-300); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                Automates credit assessment using applicant demographics, income status, existing EMI commitments, and past default history to optimize processing cycles.
             </p>
-
-            <div style="display: flex; justify-content: center; gap: 1rem;">
-                <a href="{{ url_for('main.predict') }}" class="btn btn-primary">
-                    Evaluate Applicant
-                </a>
-                <a href="{{ url_for('main.dashboard') }}" class="btn btn-ghost">
-                    View Analytics
-                </a>
-            </div>
+            <p style="color: var(--neutral-300); font-size: 0.95rem; line-height: 1.6;">
+                Leverages tree-based classifiers to construct transparent risk models, ensuring strict compliance with credit line thresholds.
+            </p>
         </div>
 
-        <!-- Project Overview Details -->
-        <div class="predict-grid" style="margin-bottom: 4rem;">
-            <div class="card" style="padding: 2.5rem;">
-                <h3 class="form-section-title">🔍 Project Goals</h3>
-                <p style="color: var(--neutral-300); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                    Automates credit assessment using applicant demographics, income status, existing EMI commitments, and past default history to optimize processing cycles.
-                </p>
-                <p style="color: var(--neutral-300); font-size: 0.95rem; line-height: 1.6;">
-                    Leverages tree-based classifiers to construct transparent risk models, ensuring strict compliance with credit line thresholds.
-                </p>
-            </div>
-
-            <div class="card" style="padding: 2.5rem;">
-                <h3 class="form-section-title">⚙️ Evaluation Engines</h3>
-                <p style="color: var(--neutral-300); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                    Runs a hybrid scoring environment consisting of:
-                </p>
-                <ul style="color: var(--neutral-300); font-size: 0.95rem; line-height: 1.8; padding-left: 1.2rem; margin: 0;">
-                    <li><strong>Rule-Based Pipeline:</strong> Strict primary compliance verification.</li>
-                    <li><strong>XGBoost Model fallback:</strong> ML-based risk assessment (91.2% accuracy).</li>
-                    <li><strong>Ensemble Models:</strong> Logistic Regression, Decision Trees, and Random Forests.</li>
-                </ul>
-            </div>
+        <div class="card" style="padding: 2.5rem;">
+            <h3 class="form-section-title">⚙️ Evaluation Engines</h3>
+            <p style="color: var(--neutral-300); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                Runs a hybrid scoring environment consisting of:
+            </p>
+            <ul style="color: var(--neutral-300); font-size: 0.95rem; line-height: 1.8; padding-left: 1.2rem; margin: 0;">
+                <li><strong>Rule-Based Pipeline:</strong> Strict primary compliance verification.</li>
+                <li><strong>XGBoost Model fallback:</strong> ML-based risk assessment (91.2% accuracy).</li>
+                <li><strong>Ensemble Models:</strong> Logistic Regression, Decision Trees, and Random Forests.</li>
+            </ul>
         </div>
+    </div>
 
-        <!-- Software Development Life Cycle Roadmap -->
-        <div class="card" style="padding: 3rem 2.5rem; margin-bottom: 4rem;">
-            <h3 class="form-section-title" style="text-align: center; margin-bottom: 2.5rem;">🚀 SDLC Development Pipeline</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; text-align: center;">
-                <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;" onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">📊</div>
-                    <h5 style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">1. Exploration</h5>
-                    <p style="color: var(--text-muted); font-size: 0.75rem; line-height: 1.4;">Cleaning duplicates and missing values</p>
-                </div>
-                <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;" onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🧹</div>
-                    <h5 style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">2. Preprocessing</h5>
-                    <p style="color: var(--text-muted); font-size: 0.75rem; line-height: 1.4;">Label encoding and feature mapping</p>
-                </div>
-                <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;" onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🤖</div>
-                    <h5 style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">3. Model Training</h5>
-                    <p style="color: var(--text-muted); font-size: 0.75rem; line-height: 1.4;">Training 4 classification pipelines</p>
-                </div>
-                <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;" onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🌐</div>
-                    <h5 style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">4. Deployment</h5>
-                    <p style="color: var(--text-muted); font-size: 0.75rem; line-height: 1.4;">Lightweight serverless cloud deployment</p>
-                </div>
+    <!-- Software Development Life Cycle Roadmap -->
+    <div class="card" style="padding: 3rem 2.5rem; margin-bottom: 4rem;">
+        <h3 class="form-section-title" style="text-align: center; margin-bottom: 2.5rem;">🚀 SDLC Development Pipeline</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; text-align: center;">
+            <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;" onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
+                <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">📊</div>
+                <h5 style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">1. Exploration</h5>
+                <p style="color: var(--text-muted); font-size: 0.75rem; line-height: 1.4;">Cleaning duplicates and missing values</p>
+            </div>
+            <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;" onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
+                <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🧹</div>
+                <h5 style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">2. Preprocessing</h5>
+                <p style="color: var(--text-muted); font-size: 0.75rem; line-height: 1.4;">Label encoding and feature mapping</p>
+            </div>
+            <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;" onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
+                <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🤖</div>
+                <h5 style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">3. Model Training</h5>
+                <p style="color: var(--text-muted); font-size: 0.75rem; line-height: 1.4;">Training 4 classification pipelines</p>
+            </div>
+            <div style="padding: 1.5rem 1rem; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); transition: border-color 300ms ease;" onmouseover="this.style.borderColor='rgba(255,255,255,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
+                <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🌐</div>
+                <h5 style="color: white; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; letter-spacing: -0.02em;">4. Deployment</h5>
+                <p style="color: var(--text-muted); font-size: 0.75rem; line-height: 1.4;">Lightweight serverless cloud deployment</p>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-    // Apply exact global styles requested
-    document.body.classList.add('bg-black', 'text-white', 'overflow-hidden');
-    // We add min-h-screen via classList as well
-    document.body.classList.add('min-h-screen');
-
-    const vertexShader = `
-    varying vec2 vUv;
-    void main() {
-        vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-    `;
-
-    const fragmentShader = `
-    uniform float iTime;
-    uniform vec3 iResolution;
-    varying vec2 vUv;
-
-    #define TAU 6.2831853071795865
-    #define TUNNEL_LAYERS 96
-    #define RING_POINTS 128
-    #define POINT_SIZE 1.8
-    #define SPEED 0.7
-
-    #define POINT_COLOR_A vec3(1.0)
-    #define POINT_COLOR_B vec3(0.7)
-
-    float sq(float x) { return x * x; }
-
-    vec2 AngRep(vec2 uv, float angle) {
-        vec2 polar = vec2(atan(uv.y, uv.x), length(uv));
-        polar.x = mod(polar.x + angle/2.0, angle) - angle/2.0;
-        return vec2(cos(polar.x)*polar.y, sin(polar.x)*polar.y);
-    }
-
-    float sdCircle(vec2 uv, float r) {
-        return length(uv) - r;
-    }
-
-    vec2 TunnelPath(float x) {
-        return vec2(
-            0.2 * sin(TAU * x * 0.5) + 0.4 * sin(TAU * x * 0.2 + 0.3),
-            0.3 * cos(TAU * x * 0.3) + 0.2 * cos(TAU * x * 0.1)
-        ) * smoothstep(1.0, 4.0, x);
-    }
-
-    void main() {
-        vec2 uv = (vUv - 0.5) * 2.0;
-        uv.x *= iResolution.x / iResolution.y;
-
-        float camZ = iTime * SPEED;
-        vec2 camOffs = TunnelPath(camZ);
-        
-        vec3 col = vec3(0.0);
-        
-        for (int i = TUNNEL_LAYERS; i > 0; i--) {
-            float pz = float(i) / float(TUNNEL_LAYERS);
-            
-            vec2 pOffs = TunnelPath(camZ + pz) - camOffs;
-            vec2 layerUv = uv - pOffs;
-            
-            float radius = 0.15 * (1.0 / sq(pz * 0.8 + 0.4));
-            
-            vec2 repUv = AngRep(layerUv, TAU / float(RING_POINTS));
-            repUv.x -= radius;
-            
-            float d = sdCircle(repUv, POINT_SIZE / iResolution.y);
-            
-            float alpha = smoothstep(2.0 / iResolution.y, 0.0, d);
-            
-            if (alpha > 0.0) {
-                vec3 pCol = (mod(float(i / 2), 2.0) == 0.0) ? POINT_COLOR_A : POINT_COLOR_B;
-                pCol *= smoothstep(1.0, 0.2, pz);
-                col = mix(col, pCol, alpha);
-            }
-        }
-        
-        gl_FragColor = vec4(col, 1.0);
-    }
-    `;
-
-    const canvas = document.getElementById('shader-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    // Orthographic Camera for single quad rendering
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const scene = new THREE.Scene();
-
-    // Single full-screen Plane
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const uniforms = {
-        iTime: { value: 0 },
-        // Use Vector3 for iResolution as requested
-        iResolution: { value: new THREE.Vector3(window.innerWidth, window.innerHeight, 1) }
-    };
-
-    const material = new THREE.ShaderMaterial({
-        vertexShader: vertexShader,
-        fragmentShader: fragmentShader,
-        uniforms: uniforms
-    });
-
-    const plane = new THREE.Mesh(geometry, material);
-    scene.add(plane);
-
-    let lastTime = performance.now();
-
-    function animate() {
-        requestAnimationFrame(animate);
-        
-        const now = performance.now();
-        const delta = (now - lastTime) / 1000;
-        lastTime = now;
-        
-        // Exact speedMultiplier of 0.5
-        uniforms.iTime.value += delta * 0.5;
-        
-        renderer.render(scene, camera);
-    }
-
-    window.addEventListener('resize', () => {
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        uniforms.iResolution.value.set(window.innerWidth, window.innerHeight, 1);
-    });
-
-    animate();
-</script>
 {% endblock %}
