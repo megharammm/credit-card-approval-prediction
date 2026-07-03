@@ -85,13 +85,70 @@
             .identity-card {
                 border: 1px solid rgba(255, 255, 255, 0.1);
             }
+
+            /* Unlumen-style Glow Button */
+            .unlumen-glow-wrapper {
+                position: relative;
+                display: inline-block;
+                border-radius: 9999px;
+                padding: 1.5px;
+                background: rgba(255, 255, 255, 0.1);
+                overflow: hidden;
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+                transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .unlumen-glow-wrapper:hover {
+                box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+                transform: translateY(-2px);
+            }
+
+            .unlumen-glow-wrapper::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 250%;
+                height: 250%;
+                background: conic-gradient(from 0deg, transparent 0%, transparent 75%, rgba(139, 92, 246, 1) 90%, rgba(2ec4b6, 1) 100%);
+                animation: unlumen-rotate 2.5s linear infinite;
+                transform: translate(-50%, -50%);
+                z-index: 0;
+            }
+
+            .unlumen-glow-inner {
+                position: relative;
+                z-index: 1;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.8rem 2.2rem;
+                border-radius: 9999px;
+                background: #0a0a0a;
+                color: #ffffff;
+                font-weight: 500;
+                font-size: 1rem;
+                text-decoration: none;
+                transition: background 0.3s ease;
+            }
+
+            .unlumen-glow-inner:hover {
+                background: #111111;
+            }
+
+            @keyframes unlumen-rotate {
+                from { transform: translate(-50%, -50%) rotate(0deg); }
+                to { transform: translate(-50%, -50%) rotate(360deg); }
+            }
         </style>
 
-        <div style="display: flex; justify-content: center; gap: 1rem;">
-            <a href="{{ url_for('main.predict') }}" class="btn btn-primary">
-                Evaluate Applicant
-            </a>
-            <a href="{{ url_for('main.dashboard') }}" class="btn btn-ghost">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem;">
+            <div class="unlumen-glow-wrapper">
+                <a href="{{ url_for('main.predict') }}" class="unlumen-glow-inner">
+                    Evaluate Applicant
+                </a>
+            </div>
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-ghost" style="padding: 0.8rem 2.2rem;">
                 View Analytics
             </a>
         </div>
