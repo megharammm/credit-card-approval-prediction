@@ -117,10 +117,22 @@
             /* The blurred backdrop (glow) */
             .unlumen-glow-blur {
                 position: absolute;
+                inset: 0;
+                border-radius: 9999px;
+                overflow: hidden;
+                filter: blur(8px);
+                opacity: 0.35;
+                z-index: 0;
+                transition: opacity 0.2s ease, filter 0.2s ease;
+            }
+
+            .unlumen-glow-blur::before {
+                content: '';
+                position: absolute;
                 top: 50%;
                 left: 50%;
-                width: 150%;
-                height: 300%;
+                width: 250%;
+                height: 250%;
                 background: conic-gradient(
                     from 0deg,
                     #FF5733,
@@ -131,16 +143,11 @@
                 );
                 animation: unlumen-rotate 5s linear infinite;
                 transform: translate(-50%, -50%);
-                filter: blur(14px);
-                opacity: 0.48;
-                z-index: 0;
-                border-radius: 50%;
-                transition: opacity 0.2s ease, filter 0.2s ease;
             }
 
             .unlumen-glow-container:hover .unlumen-glow-blur {
-                opacity: 0.64;
-                filter: blur(16px);
+                opacity: 0.45;
+                filter: blur(10px);
             }
 
             .unlumen-glow-container:disabled .unlumen-glow-blur,
