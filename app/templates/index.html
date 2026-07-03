@@ -23,173 +23,174 @@
         </p>
 
         <form action="{{ url_for('main.predict') }}" method="POST" id="predict-form">
-            <div class="predict-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <!-- New 4-Section Clean Layout -->
+            <div style="display: flex; flex-direction: column; gap: 3rem;">
                 
-                <!-- Section A: Personal Information -->
-                <div>
-                    <h3 class="form-section-title">👤 Personal Information</h3>
-                    
-                    <!-- Applicant Name (Custom requested field) -->
-                    <div class="form-group">
-                        <label for="name" class="form-label">Applicant Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter applicant name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="gender" class="form-label">Gender</label>
-                        <select id="gender" name="gender" class="form-control" required>
-                            <option value="F">Female</option>
-                            <option value="M">Male</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="age" class="form-label">Age (in Years)</label>
-                        <input type="number" id="age" name="age" class="form-control" min="18" max="100" value="30" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="name_family_status" class="form-label">Marital Status</label>
-                        <select id="name_family_status" name="name_family_status" class="form-control" required>
-                            <option value="Married">Married</option>
-                            <option value="Single / not married">Single / Not Married</option>
-                            <option value="Civil marriage">Civil Marriage</option>
-                            <option value="Separated">Separated</option>
-                            <option value="Widow">Widow</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cnt_children" class="form-label">Number of Children</label>
-                        <input type="number" id="cnt_children" name="cnt_children" class="form-control" min="0" max="20" value="0" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="cnt_fam_members" class="form-label">Total Family Members</label>
-                        <input type="number" id="cnt_fam_members" name="cnt_fam_members" class="form-control" min="1" max="25" value="2" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="name_education_type" class="form-label">Education Type</label>
-                        <select id="name_education_type" name="name_education_type" class="form-control" required>
-                            <option value="Higher education">Graduate / Post Graduate (Higher Education)</option>
-                            <option value="Secondary / secondary special">High School (Secondary / Secondary Special)</option>
-                            <option value="Incomplete higher">Incomplete Higher</option>
-                            <option value="Lower secondary">Lower Secondary</option>
-                            <option value="Academic degree">Academic Degree</option>
-                        </select>
+                <!-- Section 1: Personal Profile -->
+                <div class="form-section-block">
+                    <h3 class="form-section-title" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">👤 Personal Profile</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Applicant Name</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Enter applicant name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age" class="form-label">Age (in Years)</label>
+                            <input type="number" id="age" name="age" class="form-control" min="18" max="100" value="30" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select id="gender" name="gender" class="form-control" required>
+                                <option value="F">Female</option>
+                                <option value="M">Male</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name_family_status" class="form-label">Marital Status</label>
+                            <select id="name_family_status" name="name_family_status" class="form-control" required>
+                                <option value="Married">Married</option>
+                                <option value="Single / not married">Single / Not Married</option>
+                                <option value="Civil marriage">Civil Marriage</option>
+                                <option value="Separated">Separated</option>
+                                <option value="Widow">Widow</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cnt_children" class="form-label">Number of Children</label>
+                            <input type="number" id="cnt_children" name="cnt_children" class="form-control" min="0" max="20" value="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cnt_fam_members" class="form-label">Total Family Members</label>
+                            <input type="number" id="cnt_fam_members" name="cnt_fam_members" class="form-control" min="1" max="25" value="2" required>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Section B: Financials, Assets & Job Profile -->
-                <div>
-                    <h3 class="form-section-title">💰 Financials, Assets & Job</h3>
+                <!-- Section 2: Contact & Assets -->
+                <div class="form-section-block">
+                    <h3 class="form-section-title" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">🏠 Contact & Assets</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                        <div class="form-group">
+                            <label for="name_education_type" class="form-label">Education Type</label>
+                            <select id="name_education_type" name="name_education_type" class="form-control" required>
+                                <option value="Higher education">Graduate / Post Graduate</option>
+                                <option value="Secondary / secondary special">High School</option>
+                                <option value="Incomplete higher">Incomplete Higher</option>
+                                <option value="Lower secondary">Lower Secondary</option>
+                                <option value="Academic degree">Academic Degree</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="own_car" class="form-label">Owns a Car?</label>
+                            <select id="own_car" name="own_car" class="form-control" required>
+                                <option value="N">No</option>
+                                <option value="Y">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="own_realty" class="form-label">Owns Real Estate / Property?</label>
+                            <select id="own_realty" name="own_realty" class="form-control" required>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name_housing_type" class="form-label">Housing Arrangement</label>
+                            <select id="name_housing_type" name="name_housing_type" class="form-control" required>
+                                <option value="House / apartment">House / Apartment</option>
+                                <option value="Rented apartment">Rented Apartment</option>
+                                <option value="Municipal apartment">Municipal Apartment</option>
+                                <option value="With parents">With Parents</option>
+                                <option value="Co-op apartment">Co-op Apartment</option>
+                                <option value="Office apartment">Office Apartment</option>
+                            </select>
+                        </div>
+                    </div>
                     
-                    <div class="form-group">
-                        <label for="monthly_salary" class="form-label">Monthly Salary (₹)</label>
-                        <input type="text" id="monthly_salary" name="monthly_salary" class="form-control" placeholder="e.g. 50,000" value="50,000" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="credit_score" class="form-label">Credit Score</label>
-                        <input type="number" id="credit_score" name="credit_score" class="form-control" min="300" max="900" value="750" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="existing_emi" class="form-label">Existing Monthly EMI (₹)</label>
-                        <input type="text" id="existing_emi" name="existing_emi" class="form-control" placeholder="e.g. 5,000" value="0" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="own_car" class="form-label">Owns a Car?</label>
-                        <select id="own_car" name="own_car" class="form-control" required>
-                            <option value="N">No</option>
-                            <option value="Y">Yes</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="own_realty" class="form-label">Owns Real Estate / Property?</label>
-                        <select id="own_realty" name="own_realty" class="form-control" required>
-                            <option value="Y">Yes</option>
-                            <option value="N">No</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="name_housing_type" class="form-label">Housing Arrangement</label>
-                        <select id="name_housing_type" name="name_housing_type" class="form-control" required>
-                            <option value="House / apartment">House / Apartment</option>
-                            <option value="Rented apartment">Rented Apartment</option>
-                            <option value="Municipal apartment">Municipal Apartment</option>
-                            <option value="With parents">With Parents</option>
-                            <option value="Co-op apartment">Co-op Apartment</option>
-                            <option value="Office apartment">Office Apartment</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="name_income_type" class="form-label">Income Type</label>
-                        <select id="name_income_type" name="name_income_type" class="form-control" required>
-                            <option value="Working">Working</option>
-                            <option value="Commercial associate">Commercial Associate</option>
-                            <option value="Pensioner">Pensioner</option>
-                            <option value="State servant">State Servant</option>
-                            <option value="Student">Student</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="employment_status" class="form-label">Employment Status</label>
-                        <select id="employment_status" name="employment_status" class="form-control" required>
-                            <option value="Salaried">Salaried</option>
-                            <option value="Self-employed">Self-employed</option>
-                            <option value="Unemployed">Unemployed / Retired</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group" style="margin-top: 1rem; margin-bottom: 1rem;">
-                        <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.95rem; cursor: pointer; font-weight: 500;">
-                            <input type="checkbox" id="loan_default_history" name="loan_default_history" style="accent-color: var(--primary);"> Has Defaulted on Loans Before?
-                        </label>
-                    </div>
-
-                    <div class="form-group" id="experience-group">
-                        <label for="experience" class="form-label">Work Experience (in Years)</label>
-                        <input type="number" id="experience" name="experience" class="form-control" min="0" max="60" value="5" step="0.5">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="occupation_type" class="form-label">Occupation Type</label>
-                        <select id="occupation_type" name="occupation_type" class="form-control" required>
-                            <option value="Laborers">Laborers</option>
-                            <option value="Core staff">Core Staff</option>
-                            <option value="Sales staff">Sales Staff</option>
-                            <option value="Managers">Managers</option>
-                            <option value="Drivers">Drivers</option>
-                            <option value="High skill tech staff">High Skill Tech Staff</option>
-                            <option value="Accountants">Accountants</option>
-                            <option value="Medicine staff">Medicine Staff</option>
-                            <option value="IT staff">IT Staff</option>
-                            <option value="Security staff">Security Staff</option>
-                            <option value="Other">Other / Unspecified</option>
-                        </select>
-                    </div>
-
-                    <!-- Contact Details Flags -->
-                    <div class="form-group" style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                        <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; cursor: pointer;">
+                    <!-- Contact Flags -->
+                    <div class="form-group" style="display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                        <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; cursor: pointer;">
                             <input type="checkbox" id="flag_work_phone" name="flag_work_phone" value="1" checked style="accent-color: var(--primary);"> Work Phone
                         </label>
-                        <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; cursor: pointer;">
+                        <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; cursor: pointer;">
                             <input type="checkbox" id="flag_phone" name="flag_phone" value="1" checked style="accent-color: var(--primary);"> Personal Phone
                         </label>
-                        <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; cursor: pointer;">
-                            <input type="checkbox" id="flag_email" name="flag_email" value="1" style="accent-color: var(--primary);"> Email
+                        <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; cursor: pointer;">
+                            <input type="checkbox" id="flag_email" name="flag_email" value="1" style="accent-color: var(--primary);"> Email Address
                         </label>
                     </div>
                 </div>
 
+                <!-- Section 3: Employment Profile -->
+                <div class="form-section-block">
+                    <h3 class="form-section-title" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">💼 Employment Profile</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                        <div class="form-group">
+                            <label for="name_income_type" class="form-label">Income Type</label>
+                            <select id="name_income_type" name="name_income_type" class="form-control" required>
+                                <option value="Working">Working</option>
+                                <option value="Commercial associate">Commercial Associate</option>
+                                <option value="Pensioner">Pensioner</option>
+                                <option value="State servant">State Servant</option>
+                                <option value="Student">Student</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="employment_status" class="form-label">Employment Status</label>
+                            <select id="employment_status" name="employment_status" class="form-control" required>
+                                <option value="Salaried">Salaried</option>
+                                <option value="Self-employed">Self-employed</option>
+                                <option value="Unemployed">Unemployed / Retired</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="occupation_type" class="form-label">Occupation Type</label>
+                            <select id="occupation_type" name="occupation_type" class="form-control" required>
+                                <option value="Laborers">Laborers</option>
+                                <option value="Core staff">Core Staff</option>
+                                <option value="Sales staff">Sales Staff</option>
+                                <option value="Managers">Managers</option>
+                                <option value="Drivers">Drivers</option>
+                                <option value="High skill tech staff">High Skill Tech Staff</option>
+                                <option value="Accountants">Accountants</option>
+                                <option value="Medicine staff">Medicine Staff</option>
+                                <option value="IT staff">IT Staff</option>
+                                <option value="Security staff">Security Staff</option>
+                                <option value="Other">Other / Unspecified</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="experience-group">
+                            <label for="experience" class="form-label">Work Experience (Years)</label>
+                            <input type="number" id="experience" name="experience" class="form-control" min="0" max="60" value="5" step="0.5">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Financial Standing -->
+                <div class="form-section-block">
+                    <h3 class="form-section-title" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">💰 Financial Standing</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                        <div class="form-group">
+                            <label for="monthly_salary" class="form-label">Monthly Salary (₹)</label>
+                            <input type="text" id="monthly_salary" name="monthly_salary" class="form-control" placeholder="e.g. 50,000" value="50,000" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="existing_emi" class="form-label">Existing Monthly EMI (₹)</label>
+                            <input type="text" id="existing_emi" name="existing_emi" class="form-control" placeholder="e.g. 5,000" value="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="credit_score" class="form-label">Credit Score</label>
+                            <input type="number" id="credit_score" name="credit_score" class="form-control" min="300" max="900" value="750" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.95rem; cursor: pointer; font-weight: 500; padding: 0.75rem 1rem; border: 1px solid rgba(255,100,100,0.2); border-radius: 8px; background: rgba(255,100,100,0.05);">
+                            <input type="checkbox" id="loan_default_history" name="loan_default_history" style="accent-color: var(--primary);"> 
+                            <span style="color: #ff8888;">Has Defaulted on Loans Before?</span>
+                        </label>
+                    </div>
+                </div>
             </div>
 
             <div style="text-align: center; margin-top: 2rem;">
