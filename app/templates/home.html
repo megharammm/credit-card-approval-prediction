@@ -131,16 +131,16 @@
                 );
                 animation: unlumen-rotate 5s linear infinite;
                 transform: translate(-50%, -50%);
-                filter: blur(28px);
-                opacity: 0.6;
+                filter: blur(14px);
+                opacity: 0.48;
                 z-index: 0;
                 border-radius: 50%;
                 transition: opacity 0.2s ease, filter 0.2s ease;
             }
 
             .unlumen-glow-container:hover .unlumen-glow-blur {
-                opacity: 0.8;
-                filter: blur(32px);
+                opacity: 0.64;
+                filter: blur(16px);
             }
 
             .unlumen-glow-container:disabled .unlumen-glow-blur,
@@ -185,13 +185,13 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                gap: 8px;
-                padding: 0.8rem 2.2rem;
+                gap: 6px;
+                padding: 10px 20px;
                 border-radius: 9999px;
                 background: #0a0a0a;
                 color: #ffffff;
-                font-weight: 500;
-                font-size: 1rem;
+                font-weight: 600;
+                font-size: 15px;
                 text-decoration: none;
                 transition: background 0.3s ease;
             }
@@ -212,6 +212,10 @@
                 <div class="unlumen-glow-border">
                     <a href="{{ url_for('main.predict') }}" class="unlumen-glow-inner" aria-label="Evaluate Applicant">
                         Evaluate Applicant
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
                     </a>
                 </div>
             </div>
