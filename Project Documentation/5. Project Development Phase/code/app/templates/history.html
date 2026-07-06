@@ -3,13 +3,20 @@
 {% block title %}Evaluation History - CreditValet{% endblock %}
 
 {% block content %}
-<div class="card" style="margin-top: 1rem;">
-    <h2 style="font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">Evaluation History</h2>
-    <p style="color: var(--text-muted); text-align: center; margin-bottom: 2rem;">Log of previous creditworthiness assessments performed by your account.</p>
+<div class="card" style="margin-top: 2rem;">
+    <!-- App Preview Window Controls -->
+    <div class="app-preview-header">
+        <div class="app-preview-dot"></div>
+        <div class="app-preview-dot"></div>
+        <div class="app-preview-dot"></div>
+    </div>
+
+    <h2 style="font-size: 1.8rem; font-weight: 500; letter-spacing: -0.04em; margin-bottom: 0.5rem; text-align: center;">Evaluation History</h2>
+    <p style="color: var(--text-muted); text-align: center; margin-bottom: 2.5rem; font-size: 0.95rem; font-weight: 300;">Log of previous creditworthiness assessments performed by the rule engine.</p>
 
     {% if not predictions %}
-        <div style="text-align: center; padding: 3rem; border: 1px dashed var(--border-color); border-radius: 12px; background: rgba(255, 255, 255, 0.02);">
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1.1rem;">You haven't run any prediction queries yet.</p>
+        <div style="text-align: center; padding: 4rem 2rem; border: 1px dashed var(--border-color); border-radius: 12px; background: rgba(255, 255, 255, 0.01);">
+            <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 1rem;">No evaluation queries logged yet.</p>
             <a href="{{ url_for('main.predict') }}" class="btn btn-primary">Start New Evaluation</a>
         </div>
     {% else %}
@@ -19,31 +26,30 @@
                     <tr>
                         <th>Date & Time</th>
                         <th>Applicant Details</th>
-                        <th>Income (₹)</th>
-                        <th>Model Used</th>
-                        <th>Probability</th>
+                        <th>Monthly Salary</th>
+                        <th>Engine Mode</th>
+                        <th>Confidence</th>
                         <th>Decision</th>
-                        <th>Actions</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for pred in predictions %}
                         <tr id="pred-row-{{ pred.id }}">
-                            <td style="font-size: 0.88rem; color: var(--text-main);">
+                            <td style="font-size: 0.85rem;">
                                 {{ pred.predicted_at.strftime('%Y-%m-%d %H:%M') }}
                             </td>
-                            <td style="font-size: 0.88rem;">
-                                {{ 'Male' if pred.applicant.gender == 'M' else 'Female' }}, 
-                                {{ "%.0f"|format(-pred.applicant.days_birth / 365.25) }} Yrs, 
-                                {{ pred.applicant.name_family_status }}
+                            <td style="font-size: 0.85rem; color: #ffffff;">
+                                {{ "%.0f"|format(pred.applicant.age_years) }} Yrs, 
+                                {{ pred.applicant.employment_status }}
                             </td>
-                            <td style="font-weight: 500; color: white;">
-                                ₹{{ "{:,.0f}".format(pred.applicant.amt_income_total) }}
+                            <td style="font-size: 0.85rem; font-weight: 500;">
+                                ₹{{ "{:,.0f}".format(pred.applicant.monthly_salary) }}
                             </td>
-                            <td>
+                            <td style="font-size: 0.85rem;">
                                 {{ pred.ml_model.model_name }}
                             </td>
-                            <td style="font-weight: 600; font-family: 'Outfit';">
+                            <td style="font-size: 0.85rem; font-weight: 500;">
                                 {{ "%.1f"|format(pred.prediction_probability * 100) }}%
                             </td>
                             <td>
@@ -54,7 +60,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{{ url_for('main.result', prediction_id=pred.id) }}" class="auth-link" style="font-size: 0.88rem;">View Details</a>
+                                <a href="{{ url_for('main.result', prediction_id=pred.id) }}" class="auth-link" style="font-size: 0.85rem;">View</a>
                             </td>
                         </tr>
                     {% endfor %}

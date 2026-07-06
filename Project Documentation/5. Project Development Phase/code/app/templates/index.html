@@ -3,9 +3,16 @@
 {% block title %}Evaluate Applicant - CreditValet{% endblock %}
 
 {% block content %}
-<div class="predict-wrapper" style="max-width: 1000px; margin: 0 auto;">
-    <div class="card" style="margin-top: 1rem;">
-        <h2 style="font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">Evaluate Credit Card Applicant</h2>
+<div class="predict-wrapper" style="max-width: 650px; margin: 0 auto;">
+    <div class="card" style="margin-top: 2rem;">
+        <!-- App Preview Window Controls -->
+        <div class="app-preview-header">
+            <div class="app-preview-dot"></div>
+            <div class="app-preview-dot"></div>
+            <div class="app-preview-dot"></div>
+        </div>
+
+        <h2 style="font-size: 1.8rem; font-weight: 500; letter-spacing: -0.04em; margin-bottom: 0.5rem; text-align: center;">Evaluate Credit Card Applicant</h2>
         <p style="color: var(--text-muted); text-align: center; margin-bottom: 2.5rem;">
             Using active model: 
             {% if active_model %}
@@ -16,160 +23,180 @@
         </p>
 
         <form action="{{ url_for('main.predict') }}" method="POST" id="predict-form">
-            <div class="predict-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <!-- Premium Narrow Layout -->
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                 
-                <!-- Section A: Personal Information -->
-                <div>
-                    <h3 class="form-section-title">👤 Personal Information</h3>
-                    
-                    <!-- Applicant Name (Custom requested field) -->
-                    <div class="form-group">
-                        <label for="name" class="form-label">Applicant Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter applicant name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="gender" class="form-label">Gender</label>
-                        <select id="gender" name="gender" class="form-control" required>
-                            <option value="F">Female</option>
-                            <option value="M">Male</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="age" class="form-label">Age (in Years)</label>
-                        <input type="number" id="age" name="age" class="form-control" min="18" max="100" value="30" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="name_family_status" class="form-label">Marital Status</label>
-                        <select id="name_family_status" name="name_family_status" class="form-control" required>
-                            <option value="Married">Married</option>
-                            <option value="Single / not married">Single / Not Married</option>
-                            <option value="Civil marriage">Civil Marriage</option>
-                            <option value="Separated">Separated</option>
-                            <option value="Widow">Widow</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cnt_children" class="form-label">Number of Children</label>
-                        <input type="number" id="cnt_children" name="cnt_children" class="form-control" min="0" max="20" value="0" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="cnt_fam_members" class="form-label">Total Family Members</label>
-                        <input type="number" id="cnt_fam_members" name="cnt_fam_members" class="form-control" min="1" max="25" value="2" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="name_education_type" class="form-label">Education Type</label>
-                        <select id="name_education_type" name="name_education_type" class="form-control" required>
-                            <option value="Higher education">Graduate / Post Graduate (Higher Education)</option>
-                            <option value="Secondary / secondary special">High School (Secondary / Secondary Special)</option>
-                            <option value="Incomplete higher">Incomplete Higher</option>
-                            <option value="Lower secondary">Lower Secondary</option>
-                            <option value="Academic degree">Academic Degree</option>
-                        </select>
-                    </div>
+                <!-- Row 1: Applicant Name -->
+                <div class="form-group">
+                    <label for="name" class="form-label">Applicant Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter applicant name" required>
                 </div>
 
-                <!-- Section B: Financials, Assets & Job Profile -->
-                <div>
-                    <h3 class="form-section-title">💰 Financials, Assets & Job</h3>
-                    
-                    <div class="form-group">
-                        <label for="amt_income_total" class="form-label">Annual Income (₹)</label>
-                        <input type="text" id="amt_income_total" name="amt_income_total" class="form-control" placeholder="e.g. 3,00,000" value="6,00,000" required>
-                    </div>
+                <!-- Row 2: Age & Employment -->
+                <style>
+                    /* iOS Picker Widget Styling */
+                    .ios-picker-wrapper {
+                        position: relative;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background: #080808;
+                        border: 1px solid var(--border-color);
+                        border-radius: 8px;
+                        height: 120px;
+                        overflow: hidden;
+                        box-sizing: border-box;
+                    }
 
-                    <div class="form-group">
-                        <label for="own_car" class="form-label">Owns a Car?</label>
-                        <select id="own_car" name="own_car" class="form-control" required>
-                            <option value="N">No</option>
-                            <option value="Y">Yes</option>
-                        </select>
-                    </div>
+                    .ios-picker {
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
+                        overflow: hidden;
+                        perspective: 800px;
+                        user-select: none;
+                        -webkit-user-select: none;
+                        cursor: grab;
+                        outline: none;
+                    }
 
-                    <div class="form-group">
-                        <label for="own_realty" class="form-label">Owns Real Estate / Property?</label>
-                        <select id="own_realty" name="own_realty" class="form-control" required>
-                            <option value="Y">Yes</option>
-                            <option value="N">No</option>
-                        </select>
-                    </div>
+                    .ios-picker:active {
+                        cursor: grabbing;
+                    }
 
-                    <div class="form-group">
-                        <label for="name_housing_type" class="form-label">Housing Arrangement</label>
-                        <select id="name_housing_type" name="name_housing_type" class="form-control" required>
-                            <option value="House / apartment">House / Apartment</option>
-                            <option value="Rented apartment">Rented Apartment</option>
-                            <option value="Municipal apartment">Municipal Apartment</option>
-                            <option value="With parents">With Parents</option>
-                            <option value="Co-op apartment">Co-op Apartment</option>
-                            <option value="Office apartment">Office Apartment</option>
-                        </select>
-                    </div>
+                    .ios-picker-wheel {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        transform-style: preserve-3d;
+                        top: 0;
+                        left: 0;
+                    }
 
-                    <div class="form-group">
-                        <label for="name_income_type" class="form-label">Income Type</label>
-                        <select id="name_income_type" name="name_income_type" class="form-control" required>
-                            <option value="Working">Working</option>
-                            <option value="Commercial associate">Commercial Associate</option>
-                            <option value="Pensioner">Pensioner</option>
-                            <option value="State servant">State Servant</option>
-                            <option value="Student">Student</option>
-                        </select>
-                    </div>
+                    .ios-picker-item {
+                        position: absolute;
+                        width: 100%;
+                        height: 32px;
+                        line-height: 32px;
+                        top: calc(50% - 16px);
+                        left: 0;
+                        text-align: center;
+                        font-size: 1.15rem;
+                        font-weight: 500;
+                        color: var(--text-muted);
+                        backface-visibility: hidden;
+                        -webkit-backface-visibility: hidden;
+                        transform-origin: center center;
+                        transition: color 0.15s ease, opacity 0.15s ease;
+                    }
 
+                    .ios-picker-item.selected {
+                        color: #ffffff;
+                        font-weight: 600;
+                        font-size: 1.3rem;
+                    }
+
+                    /* Gradients for fading elements */
+                    .ios-picker-wrapper::before,
+                    .ios-picker-wrapper::after {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        width: 100%;
+                        height: 40px;
+                        z-index: 5;
+                        pointer-events: none;
+                    }
+
+                    .ios-picker-wrapper::before {
+                        top: 0;
+                        background: linear-gradient(to bottom, #080808 0%, rgba(8, 8, 8, 0) 100%);
+                    }
+
+                    .ios-picker-wrapper::after {
+                        bottom: 0;
+                        background: linear-gradient(to top, #080808 0%, rgba(8, 8, 8, 0) 100%);
+                    }
+
+                    /* Selection Highlight */
+                    .ios-picker-highlight {
+                        position: absolute;
+                        top: calc(50% - 17px);
+                        left: 0;
+                        width: 100%;
+                        height: 34px;
+                        border-top: 1.5px solid rgba(255, 255, 255, 0.12);
+                        border-bottom: 1.5px solid rgba(255, 255, 255, 0.12);
+                        pointer-events: none;
+                        z-index: 4;
+                    }
+
+                    /* Light Theme Variables overrides */
+                    body.light .ios-picker-wrapper,
+                    [data-theme="light"] .ios-picker-wrapper {
+                        background: #f8f9fa;
+                    }
+                    body.light .ios-picker-wrapper::before,
+                    [data-theme="light"] .ios-picker-wrapper::before {
+                        background: linear-gradient(to bottom, #f8f9fa 0%, rgba(248, 249, 250, 0) 100%);
+                    }
+                    body.light .ios-picker-wrapper::after,
+                    [data-theme="light"] .ios-picker-wrapper::after {
+                        background: linear-gradient(to top, #f8f9fa 0%, rgba(248, 249, 250, 0) 100%);
+                    }
+                    body.light .ios-picker-highlight,
+                    [data-theme="light"] .ios-picker-highlight {
+                        border-color: rgba(0, 0, 0, 0.08);
+                    }
+                    body.light .ios-picker-item.selected,
+                    [data-theme="light"] .ios-picker-item.selected {
+                        color: #000000;
+                    }
+                </style>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start;">
+                    <div class="form-group">
+                        <label class="form-label">Age (in Years)</label>
+                        <div class="ios-picker-wrapper">
+                            <input type="hidden" id="age" name="age" value="30">
+                            <div class="ios-picker" id="age-picker" tabindex="0" aria-label="Age Picker">
+                                <div class="ios-picker-highlight"></div>
+                                <div class="ios-picker-wheel" id="age-wheel"></div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="employment_status" class="form-label">Employment Status</label>
                         <select id="employment_status" name="employment_status" class="form-control" required>
-                            <option value="Employed">Employed</option>
+                            <option value="Salaried">Salaried</option>
+                            <option value="Self-employed">Self-employed</option>
                             <option value="Unemployed">Unemployed / Retired</option>
                         </select>
                     </div>
+                </div>
 
-                    <div class="form-group" id="experience-group">
-                        <label for="experience" class="form-label">Work Experience (in Years)</label>
-                        <input type="number" id="experience" name="experience" class="form-control" min="0" max="60" value="5" step="0.5">
-                    </div>
-
+                <!-- Row 3: Salary & EMI -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                     <div class="form-group">
-                        <label for="occupation_type" class="form-label">Occupation Type</label>
-                        <select id="occupation_type" name="occupation_type" class="form-control" required>
-                            <option value="Laborers">Laborers</option>
-                            <option value="Core staff">Core Staff</option>
-                            <option value="Sales staff">Sales Staff</option>
-                            <option value="Managers">Managers</option>
-                            <option value="Drivers">Drivers</option>
-                            <option value="High skill tech staff">High Skill Tech Staff</option>
-                            <option value="Accountants">Accountants</option>
-                            <option value="Medicine staff">Medicine Staff</option>
-                            <option value="IT staff">IT Staff</option>
-                            <option value="Security staff">Security Staff</option>
-                            <option value="Other">Other / Unspecified</option>
-                        </select>
+                        <label for="monthly_salary" class="form-label">Monthly Salary (₹)</label>
+                        <input type="text" id="monthly_salary" name="monthly_salary" class="form-control" placeholder="e.g. 50,000" value="50,000" required>
                     </div>
-
-                    <!-- Contact Details Flags -->
-                    <div class="form-group" style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                        <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; cursor: pointer;">
-                            <input type="checkbox" id="flag_work_phone" name="flag_work_phone" value="1" checked style="accent-color: var(--primary);"> Work Phone
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; cursor: pointer;">
-                            <input type="checkbox" id="flag_phone" name="flag_phone" value="1" checked style="accent-color: var(--primary);"> Personal Phone
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; cursor: pointer;">
-                            <input type="checkbox" id="flag_email" name="flag_email" value="1" style="accent-color: var(--primary);"> Email
-                        </label>
+                    <div class="form-group">
+                        <label for="existing_emi" class="form-label">Existing Monthly EMI (₹)</label>
+                        <input type="text" id="existing_emi" name="existing_emi" class="form-control" placeholder="e.g. 5,000" value="0" required>
                     </div>
                 </div>
 
+                <!-- Row 4: Credit Score -->
+                <div class="form-group">
+                    <label for="credit_score" class="form-label">Credit Score</label>
+                    <input type="number" id="credit_score" name="credit_score" class="form-control" min="300" max="900" value="750" required>
+                </div>
             </div>
 
-            <div style="text-align: center; margin-top: 2rem;">
-                <button type="submit" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem; width: 100%; max-width: 400px; border-radius: 50px; font-weight: 600;">
+            <div style="text-align: center; margin-top: 2.5rem;">
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px;">
                     Evaluate Credit Approval
                 </button>
             </div>
@@ -178,28 +205,262 @@
 </div>
 
 <script>
-    // Handle show/hide of experience input based on employment status select
-    const statusSelect = document.getElementById('employment_status');
-    const expGroup = document.getElementById('experience-group');
-    statusSelect.addEventListener('change', function() {
-        if (this.value === 'Unemployed') {
-            expGroup.style.display = 'none';
-        } else {
-            expGroup.style.display = 'block';
-        }
-    });
-
     // Dynamic Indian Currency (en-IN Lakhs/Crores) comma formatting on typing
-    const incomeInput = document.getElementById('amt_income_total');
-    incomeInput.addEventListener('input', function(e) {
-        // Strip out any character that is not a digit
-        let rawVal = this.value.replace(/[^\d]/g, '');
-        if (rawVal === '') {
-            this.value = '';
-            return;
+    const formatInput = function(inputEl) {
+        if (!inputEl) return;
+        inputEl.addEventListener('input', function(e) {
+            // Strip out any character that is not a digit
+            let rawVal = this.value.replace(/[^\d]/g, '');
+            if (rawVal === '') {
+                this.value = '';
+                return;
+            }
+            // Format the parsed integer using the Indian locale
+            this.value = Number(rawVal).toLocaleString('en-IN');
+        });
+    };
+    formatInput(document.getElementById('monthly_salary'));
+    formatInput(document.getElementById('existing_emi'));
+
+    // iOS Picker Widget Implementation
+    class IOSPicker {
+        constructor(element, min, max, value, onChange) {
+            this.element = element;
+            this.wheel = element.querySelector('.ios-picker-wheel');
+            this.min = min;
+            this.max = max;
+            this.value = value;
+            this.onChange = onChange;
+            
+            this.itemHeight = 32; // height of item matches CSS height
+            this.angleStep = 20; // 20 degrees step per item
+            this.radius = 80; // transform-origin Z axis displacement matches CSS -80px
+            
+            this.items = [];
+            this.currentAngle = 0;
+            this.startY = 0;
+            this.startAngle = 0;
+            this.isDragging = false;
+            
+            // Momentum/inertia variables
+            this.velocity = 0;
+            this.lastY = 0;
+            this.lastTime = 0;
+            this.animFrameId = null;
+            
+            this.init();
         }
-        // Format the parsed integer using the Indian locale
-        this.value = Number(rawVal).toLocaleString('en-IN');
+        
+        init() {
+            const count = this.max - this.min + 1;
+            const fragment = document.createDocumentFragment();
+            
+            for (let i = 0; i < count; i++) {
+                const val = this.min + i;
+                const item = document.createElement('div');
+                item.className = 'ios-picker-item';
+                item.textContent = val;
+                
+                // Form cylinder orbit rotation with radius translateZ
+                const angle = i * this.angleStep;
+                item.style.transform = `rotateX(${angle}deg) translateZ(${this.radius}px)`;
+                
+                fragment.appendChild(item);
+                this.items.push({
+                    element: item,
+                    value: val,
+                    angle: angle
+                });
+            }
+            this.wheel.appendChild(fragment);
+            
+            // Set initial selected value position
+            const initialIndex = Math.max(0, Math.min(count - 1, this.value - this.min));
+            this.currentAngle = initialIndex * this.angleStep;
+            this.updateWheel(true);
+            
+            // Bind Drag & Swipe Listeners
+            this.element.addEventListener('mousedown', this.onDragStart.bind(this));
+            window.addEventListener('mousemove', this.onDragMove.bind(this));
+            window.addEventListener('mouseup', this.onDragEnd.bind(this));
+            
+            this.element.addEventListener('touchstart', this.onDragStart.bind(this), { passive: true });
+            window.addEventListener('touchmove', this.onDragMove.bind(this), { passive: false });
+            window.addEventListener('touchend', this.onDragEnd.bind(this));
+            
+            // Scroll Wheel Listener
+            this.element.addEventListener('wheel', this.onWheel.bind(this), { passive: false });
+            
+            // Keydown navigation (ArrowUp / ArrowDown)
+            this.element.addEventListener('keydown', this.onKeydown.bind(this));
+        }
+        
+        updateWheel(instant = false) {
+            if (instant) {
+                this.wheel.style.transition = 'none';
+            } else {
+                this.wheel.style.transition = 'transform 0.22s cubic-bezier(0.1, 0.8, 0.25, 1)';
+            }
+            
+            // Translate the wheel back by radius, and rotate in opposite direction of active item
+            this.wheel.style.transform = `translateZ(${-this.radius}px) rotateX(${-this.currentAngle}deg)`;
+            
+            // Identify active index and fade non-centered items
+            const activeIndex = Math.max(0, Math.min(this.items.length - 1, Math.round(this.currentAngle / this.angleStep)));
+            
+            this.items.forEach((item, idx) => {
+                const diff = Math.abs(idx - activeIndex);
+                if (idx === activeIndex) {
+                    item.element.classList.add('selected');
+                    item.element.style.opacity = '1';
+                    item.element.style.visibility = 'visible';
+                } else if (diff <= 2) {
+                    item.element.classList.remove('selected');
+                    // Fade items out the further they are from the center highlight
+                    const fade = 1.0 - diff * 0.35;
+                    item.element.style.opacity = fade.toString();
+                    item.element.style.visibility = 'visible';
+                } else {
+                    item.element.classList.remove('selected');
+                    item.element.style.opacity = '0';
+                    item.element.style.visibility = 'hidden';
+                }
+            });
+            
+            const newValue = this.items[activeIndex].value;
+            if (newValue !== this.value) {
+                this.value = newValue;
+                if (this.onChange) this.onChange(this.value);
+            }
+        }
+        
+        onDragStart(e) {
+            cancelAnimationFrame(this.animFrameId);
+            this.isDragging = true;
+            
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            this.startY = clientY;
+            this.startAngle = this.currentAngle;
+            
+            this.lastY = clientY;
+            this.lastTime = Date.now();
+            this.velocity = 0;
+            
+            if (e.type === 'mousedown') {
+                e.preventDefault(); // prevents highlighting text
+            }
+        }
+        
+        onDragMove(e) {
+            if (!this.isDragging) return;
+            
+            if (e.cancelable) e.preventDefault();
+            
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            const deltaY = clientY - this.startY;
+            
+            // Map movement direction: drag down rotates wheel up (lower indices)
+            this.currentAngle = this.startAngle - deltaY * 0.42;
+            
+            // Limit overscroll elastic boundaries
+            const maxAngle = (this.items.length - 1) * this.angleStep;
+            this.currentAngle = Math.max(-15, Math.min(maxAngle + 15, this.currentAngle));
+            
+            const now = Date.now();
+            const dt = now - this.lastTime;
+            if (dt > 0) {
+                this.velocity = (clientY - this.lastY) / dt;
+            }
+            this.lastY = clientY;
+            this.lastTime = now;
+            
+            this.updateWheel(true);
+        }
+        
+        onDragEnd() {
+            if (!this.isDragging) return;
+            this.isDragging = false;
+            
+            if (Math.abs(this.velocity) > 0.08) {
+                this.runMomentum();
+            } else {
+                this.snapToNearest();
+            }
+        }
+        
+        runMomentum() {
+            const decay = 0.94; // friction
+            const step = () => {
+                // drag direction matches velocity sign
+                this.currentAngle -= this.velocity * 10;
+                this.velocity *= decay;
+                
+                const maxAngle = (this.items.length - 1) * this.angleStep;
+                if (this.currentAngle < 0) {
+                    this.currentAngle = 0;
+                    this.velocity = 0;
+                } else if (this.currentAngle > maxAngle) {
+                    this.currentAngle = maxAngle;
+                    this.velocity = 0;
+                }
+                
+                this.updateWheel(true);
+                
+                if (Math.abs(this.velocity) > 0.04) {
+                    this.animFrameId = requestAnimationFrame(step);
+                } else {
+                    this.snapToNearest();
+                }
+            };
+            this.animFrameId = requestAnimationFrame(step);
+        }
+        
+        snapToNearest() {
+            const maxAngle = (this.items.length - 1) * this.angleStep;
+            const targetIndex = Math.max(0, Math.min(this.items.length - 1, Math.round(this.currentAngle / this.angleStep)));
+            this.currentAngle = targetIndex * this.angleStep;
+            this.updateWheel(false);
+        }
+        
+        onWheel(e) {
+            e.preventDefault();
+            cancelAnimationFrame(this.animFrameId);
+            
+            const step = e.deltaY > 0 ? this.angleStep : -this.angleStep;
+            const maxAngle = (this.items.length - 1) * this.angleStep;
+            this.currentAngle = Math.max(0, Math.min(maxAngle, this.currentAngle + step));
+            
+            this.updateWheel(false);
+        }
+        
+        onKeydown(e) {
+            let handled = false;
+            if (e.key === 'ArrowUp') {
+                this.currentAngle = Math.max(0, this.currentAngle - this.angleStep);
+                handled = true;
+            } else if (e.key === 'ArrowDown') {
+                const maxAngle = (this.items.length - 1) * this.angleStep;
+                this.currentAngle = Math.min(maxAngle, this.currentAngle + this.angleStep);
+                handled = true;
+            }
+            
+            if (handled) {
+                e.preventDefault();
+                this.updateWheel(false);
+            }
+        }
+    }
+
+    // Initialize age wheel picker on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        const ageInput = document.getElementById('age');
+        const agePickerEl = document.getElementById('age-picker');
+        if (agePickerEl && ageInput) {
+            new IOSPicker(agePickerEl, 21, 99, parseInt(ageInput.value) || 30, (val) => {
+                ageInput.value = val;
+            });
+        }
     });
 </script>
+<script src="{{ url_for('static', filename='js/custom-select.js') }}"></script>
 {% endblock %}
