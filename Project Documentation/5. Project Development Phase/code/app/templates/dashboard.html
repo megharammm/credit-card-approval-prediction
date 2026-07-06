@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - CreditValet{% endblock %}
+
+{% block content %}
+<div style="margin-top: 1rem;">
+    <!-- Welcome Header -->
+    <div class="card" style="margin-bottom: 2.5rem; background: linear-gradient(135deg, rgba(0, 82, 212, 0.15) 0%, rgba(67, 100, 247, 0.05) 100%);">
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; font-family: 'Outfit';">Welcome back, Credit Analyst!</h2>
+        <p style="color: var(--text-muted); font-size: 1.05rem;">Manage credit evaluations, retrain classifiers, and configure scoring parameters from your control panel.</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="models-grid" style="margin-bottom: 2.5rem;">
+        <div class="model-metric-card" style="border-color: rgba(255,255,255,0.06);">
+            <h4 style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem; text-transform: uppercase;">Total Evaluations</h4>
+            <div style="font-size: 2.5rem; font-weight: 800; font-family: 'Outfit'; color: white;">{{ total_queries }}</div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">Lifetime applicant checks</p>
+        </div>
+        
+        <div class="model-metric-card" style="border-color: rgba(0, 242, 254, 0.25); box-shadow: 0 4px 15px rgba(0, 242, 254, 0.05);">
+            <h4 style="color: var(--success); font-size: 0.85rem; margin-bottom: 0.5rem; text-transform: uppercase;">Approved Profiles</h4>
+            <div style="font-size: 2.5rem; font-weight: 800; font-family: 'Outfit'; color: var(--success);">{{ approved_queries }}</div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">
+                {% if total_queries > 0 %}
+                    {{ "%.1f"|format((approved_queries / total_queries) * 100) }}% Approval Rate
+                {% else %}
+                    0% Approval Rate
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="model-metric-card" style="border-color: rgba(255, 94, 98, 0.25); box-shadow: 0 4px 15px rgba(255, 94, 98, 0.05);">
+            <h4 style="color: var(--danger); font-size: 0.85rem; margin-bottom: 0.5rem; text-transform: uppercase;">Rejected Profiles</h4>
+            <div style="font-size: 2.5rem; font-weight: 800; font-family: 'Outfit'; color: var(--danger);">{{ rejected_queries }}</div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">
+                {% if total_queries > 0 %}
+                    {{ "%.1f"|format((rejected_queries / total_queries) * 100) }}% Rejection Rate
+                {% else %}
+                    0% Rejection Rate
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="model-metric-card" style="border-color: var(--primary); box-shadow: 0 4px 15px rgba(0, 198, 251, 0.05);">
+            <h4 style="color: var(--primary); font-size: 0.85rem; margin-bottom: 0.5rem; text-transform: uppercase;">Active Predictor</h4>
+            <div style="font-size: 1.5rem; font-weight: 800; font-family: 'Outfit'; color: white; margin-top: 0.75rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                {% if active_model %}
+                    {{ active_model.model_name }}
+                {% else %}
+                    None (Retrain)
+                {% endif %}
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.85rem;">
+                {% if active_model %}
+                    Accuracy: {{ "%.2f"|format(active_model.accuracy * 100) }}%
+                {% else %}
+                    Run training pipeline
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- Quick Actions & Recent Queries -->
+    <div class="predict-grid">
+        <!-- Panel 1: Quick Actions -->
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <h3 class="form-section-title" style="margin-bottom: 1.5rem;">⚡ Quick Operations</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.6;">
+                    Run interactive applicant queries through standard questionnaires or retarget predictions by switching classifier weights on the models page.
+                </p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <a href="{{ url_for('main.predict') }}" class="btn btn-primary btn-block">New Evaluation</a>
+                <a href="{{ url_for('main.models_dashboard') }}" class="btn btn-block" style="border: 1px solid var(--border-color); color: white;">Manage ML Models</a>
+            </div>
+        </div>
+
+        <!-- Panel 2: Recent Activity -->
+        <div class="card" style="grid-column: span 2;">
+            <h3 class="form-section-title" style="margin-bottom: 1.5rem;">🕒 Recent Evaluations</h3>
+            
+            {% if not recent_predictions %}
+                <div style="text-align: center; padding: 2rem; border: 1px dashed var(--border-color); border-radius: 12px; background: rgba(255,255,255,0.01);">
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">No evaluations logged yet.</p>
+                </div>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Demographics</th>
+                                <th>Income</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pred in recent_predictions %}
+                                <tr>
+                                    <td style="font-size: 0.85rem;">{{ pred.predicted_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td style="font-size: 0.85rem; color: var(--text-main);">
+                                        {{ 'Male' if pred.applicant.gender == 'M' else 'Female' }}, 
+                                        {{ "%.0f"|format(-pred.applicant.days_birth / 365.25) }} Yrs
+                                    </td>
+                                    <td style="font-weight: 500; font-size: 0.85rem;">₹{{ "{:,.0f}".format(pred.applicant.amt_income_total) }}</td>
+                                    <td>
+                                        {% if pred.prediction_result == 1 %}
+                                            <span class="badge-status badge-approved" style="font-size: 0.75rem; padding: 0.15rem 0.5rem;">Approved</span>
+                                        {% else %}
+                                            <span class="badge-status badge-rejected" style="font-size: 0.75rem; padding: 0.15rem 0.5rem;">Rejected</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align: right; margin-top: 1rem;">
+                    <a href="{{ url_for('main.history') }}" class="auth-link" style="font-size: 0.9rem;">View All Records ➔</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
