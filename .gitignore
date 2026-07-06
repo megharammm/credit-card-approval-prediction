@@ -16,7 +16,3 @@ creditcard.db
 instance/
 
 # Large raw datasets
-dataset/
-dataset-cc.csv
-application_record.csv
-credit_record.csv
