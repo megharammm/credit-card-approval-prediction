@@ -2,7 +2,15 @@
   "builds": [
     {
       "src": "wsgi.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {
+        "includeFiles": [
+          "Source Code/**",
+          "Templates/**",
+          "Static/**",
+          "Models/**"
+        ]
+      }
     }
   ],
   "routes": [
