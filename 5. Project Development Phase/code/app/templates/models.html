@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Models Dashboard - CreditValet{% endblock %}
+
+{% block content %}
+<div style="margin-top: 2rem;">
+    <h2 style="font-size: 1.8rem; font-weight: 500; letter-spacing: -0.04em; margin-bottom: 0.5rem; text-align: center;">Model Configuration Dashboard</h2>
+    <p style="color: var(--text-muted); text-align: center; margin-bottom: 3rem; font-size: 0.95rem; font-weight: 300;">Compare trained classification models and toggle which pipeline weights are active for evaluations.</p>
+
+    <div class="models-grid" style="margin-bottom: 4rem;">
+        {% for model in models %}
+            <div class="model-metric-card {% if model.is_active %}active-model{% endif %}" id="model-card-{{ model.id }}">
+                {% if model.is_active %}
+                    <div class="active-ribbon">Active</div>
+                {% endif %}
+
+                <h3 class="model-name-title">{{ model.model_name }}</h3>
+                
+                <div class="model-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Accuracy</span>
+                        <span class="stat-val">{{ "%.2f"|format(model.accuracy * 100) }}%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Precision</span>
+                        <span class="stat-val">{{ "%.2f"|format(model.precision * 100) }}%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Recall</span>
+                        <span class="stat-val">{{ "%.2f"|format(model.recall * 100) }}%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">F1-Score</span>
+                        <span class="stat-val">{{ "%.2f"|format(model.f1_score * 100) }}%</span>
+                    </div>
+                </div>
+
+                <div style="border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                    Path: <code style="color: #ffffff; font-family: monospace;">{{ model.model_path }}</code>
+                </div>
+
+                {% if model.is_active %}
+                    <button class="btn btn-ghost btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">
+                        Currently Active
+                    </button>
+                {% else %}
+                    <form action="{{ url_for('main.toggle_model', model_id=model.id) }}" method="POST" id="toggle-form-{{ model.id }}">
+                        <button type="submit" class="btn btn-primary btn-block" style="padding: 10px;">
+                            Activate Model
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Technical Note Card -->
+    <div class="card" style="padding: 2.5rem;">
+        <!-- App Preview Header for Mock Frame effect -->
+        <div class="app-preview-header">
+            <div class="app-preview-dot"></div>
+            <div class="app-preview-dot"></div>
+            <div class="app-preview-dot"></div>
+        </div>
+        
+        <h4 style="color: #ffffff; margin-bottom: 0.75rem; font-size: 1rem; font-weight: 500; letter-spacing: -0.02em;">📋 Pipeline Technical Overview</h4>
+        <p style="font-size: 0.9rem; color: var(--neutral-300); line-height: 1.6; font-weight: 300;">
+            All models were trained on the preprocessed Credit Card Approval Prediction dataset using 80/20 train/test splits. 
+            Categorical columns are handled dynamically via a serialized <code style="color: #ffffff; font-family: monospace;">OneHotEncoder</code>, and 
+            numerical columns are normalized with a <code style="color: #ffffff; font-family: monospace;">StandardScaler</code>. The models are packaged in complete, 
+            self-contained scikit-learn <code style="color: #ffffff; font-family: monospace;">Pipeline</code> objects to ensure zero feature leakages and seamless deployment.
+        </p>
+    </div>
+</div>
+{% endblock %}
